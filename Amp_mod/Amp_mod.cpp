@@ -2,19 +2,24 @@
 //
 
 #include <iostream>
+#include<stdio.h>
+#include<math.h>
+#include<string.h>
+#include<sndfile.h>
+
+char path[] = "D:\Studia\ECE\Semestr 6\Electroacoustics\Laboratory\Lab2\svan files\svan files\pliki WAV\drill5k.wav";
 
 int main()
 {
-    std::cout << "Hello World\n";
+	SNDFILE *infile, *outfile; //anonymus pointer to data which is private to the library
+	SF_INFO sfinfo; //structure for passing data between the calling function and the library when opening for reading or writing
+	infile = sf_open(path, SFM_READ, &sfinfo); //opens the sound file at the specified path
+	if (infile == NULL) {
+		std::cout << "ERROR";
+	}
+	else {
+		std::cout << "SUCCESS";
+	}
+	sf_close(infile);
+	return 1;
 }
-// Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
-
-
-// Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
-// Porady dotyczące rozpoczynania pracy:
-//   1. Użyj okna Eksploratora rozwiązań, aby dodać pliki i zarządzać nimi
-//   2. Użyj okna programu Team Explorer, aby nawiązać połączenie z kontrolą źródła
-//   3. Użyj okna Dane wyjściowe, aby sprawdzić dane wyjściowe kompilacji i inne komunikaty
-//   4. Użyj okna Lista błędów, aby zobaczyć błędy
-//   5. Wybierz pozycję Projekt > Dodaj nowy element, aby utworzyć nowe pliki kodu, lub wybierz pozycję Projekt > Dodaj istniejący element, aby dodać istniejące pliku kodu do projektu
-//   6. Aby w przyszłości ponownie otworzyć ten projekt, przejdź do pozycji Plik > Otwórz > Projekt i wybierz plik sln
