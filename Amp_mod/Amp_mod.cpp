@@ -7,7 +7,7 @@
 #include<string.h>
 #include<sndfile.h>
 
-char path[] = "D:\Studia\ECE\Semestr 6\Electroacoustics\Laboratory\Lab2\svan files\svan files\pliki WAV\drill5k.wav";
+char path[] = "D:\\Studia\\ECE\\Semestr 6\\Electroacoustics\\Laboratory\\Lab2\\svan files\\svan files\\pliki WAV\\drill5k.wav";
 int amp = 2;
 
 int amp_change(char *table, int amp) {
