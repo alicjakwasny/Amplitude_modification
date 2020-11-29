@@ -10,23 +10,29 @@
 #include <chrono>
 #include<vector>
 
+enum class ErrorsAmpMod {
+	SUCCESS = 0,
+	SIZE_MISSMATCH = 1,
+	FILE_ERROR = 2
+};
 
-char in_path[] = "D:\\Studia\\ECE\\Semestr 6\\Electroacoustics\\Laboratory\\Lab2\\svan files\\svan files\\pliki WAV\\drill5k.wav";
-char out_path[] = "C:\\Users\\Alicja\\Documents\\Audio_out.wav";
-int amp_db = 3;
-int items;
-
-int amp_change(float *table_in, int amp, float *table_out) {
-
+ErrorsAmpMod amp_change(const std::vector<float>& table_in, int amp, std::vector<float>& table_out) {
+	if (table_in.size() != table_out.size()) {
+		return ErrorsAmpMod::SIZE_MISSMATCH;
+	}
 	amp = 10 ^ (amp / 20); //dB -> V conversion
 	for (int i = 0; table_in[i] != NULL; i++) {
 		table_out[i] = table_in[i] * amp;
 	}
-
-	return 0;
+	
+	return ErrorsAmpMod::SUCCESS;
 }
 int main()
 {
+	char in_path[] = "D:\\C++\\pliki_wav\\drill5k.wav";
+	char out_path[] = "D:\\C++\\pliki_wav\\out.wav";
+	int amp_db = 3;
+
 	auto start = std::chrono::steady_clock::now();
 
 	int i = NULL;
@@ -34,48 +40,33 @@ int main()
 	SNDFILE *infile, *outfile; //anonymus pointer to data which is private to the library, gwiazdka przy outfile!
 	SF_INFO sfinfo_in, sfinfo_out; //structure for passing data between the calling function and the library when opening for reading or writing
 	
-	std::filesystem::copy(in_path, out_path); //creating outfile
-
 	infile = sf_open(in_path, SFM_READ, &sfinfo_in); //opens the sound file at the specified path
-	outfile = sf_open(out_path, SFM_WRITE, &sfinfo_out);
-	if (infile != nullptr) {
-		std::cout << "SUCCESS";
-	}
-	else {
-		std::cout << "ERROR";
-	}
 
-	/*if (infile != nullptr && outfile != nullptr) {
-		std::cout << "SUCCESS";
-	}
-	else if (infile != nullptr) {
-		std::cout << "ERROR, but infile is ok!";
-	}
-	else {
-		std::cout << "FULL ERROR";
+	sfinfo_out = sfinfo_in;
+
+	/*if (sf_format_check(&sfinfo_out)) {
+		std::cout << "sfinfo_out is ok";
 	}*/
 
-	items = sfinfo_in.frames;
+	outfile = sf_open(out_path, SFM_WRITE, &sfinfo_out);
 
-	float elements[items];	//should be a vector?
-	float new_elements[items];
+	const int items_count = 160;
 
-	//std::vector::vector<float> elements(items);
+	std::vector<float> input_data(items_count);
+	std::vector<float> output_data(items_count);
 
-	sf_read_float(infile, elements, sfinfo_in.frames);
-
-	for (int i = 0; i < 20; i++) {
-		std::cout << "Element " << i << ": " << elements[i] << std::endl;
+	while (sf_read_float(infile, input_data.data(), input_data.size()-1)) {
+		/*for (int i = 0; i < 2; i++) {
+			if (input_data[i]) {
+				std::cout << "Element " << i << ": " << input_data[i] << std::endl;
+			}
+		}*/
+		ErrorsAmpMod err = amp_change(input_data, amp_db, output_data);
+		if ( ErrorsAmpMod::SUCCESS != err) {
+			return 1;
+		}
+		sf_write_float(outfile, output_data.data(), output_data.size());
 	}
-
-	if (amp_change(elements, amp_db, new_elements) == 0) {
-		std::cout << "Succesfully changed amplitude";
-	}
-	else {
-		std::cout << "Something went wrong with the amplitude change";
-	}
-
-	sf_write_float(outfile, new_elements, sfinfo_out.frames);
 
 	sf_close(infile);
 	sf_close(outfile);
@@ -84,6 +75,6 @@ int main()
 	std::chrono::duration<double> elapsed_seconds = end - start;
 
 	std::cout << "Elapsed time: " << elapsed_seconds.count() << std::endl;
-
+	
 	return 0;
 }
