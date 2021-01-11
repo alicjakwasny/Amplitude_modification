@@ -1,9 +1,2 @@
-﻿  Amp_mod.cpp
-D:\GIT\Amplitude_modification\Amp_mod\Amp_mod.cpp(10,15): warning C4129: "S": nierozpoznany znak sekwencji ucieczki
-D:\GIT\Amplitude_modification\Amp_mod\Amp_mod.cpp(10,15): warning C4129: "E": nierozpoznany znak sekwencji ucieczki
-D:\GIT\Amplitude_modification\Amp_mod\Amp_mod.cpp(10,15): warning C4129: "L": nierozpoznany znak sekwencji ucieczki
-D:\GIT\Amplitude_modification\Amp_mod\Amp_mod.cpp(10,15): warning C4129: "s": nierozpoznany znak sekwencji ucieczki
-D:\GIT\Amplitude_modification\Amp_mod\Amp_mod.cpp(10,15): warning C4129: "p": nierozpoznany znak sekwencji ucieczki
-D:\GIT\Amplitude_modification\Amp_mod\Amp_mod.cpp(10,15): warning C4129: "d": nierozpoznany znak sekwencji ucieczki
-D:\GIT\Amplitude_modification\Amp_mod\Amp_mod.cpp(14,20): warning C4101: "outfile": lokalna zmienna, do której nie istnieje odwołanie
+﻿  audio_amp.cpp
   Amp_mod.vcxproj -> D:\GIT\Amplitude_modification\Amp_mod\Debug\Amp_mod.exe
