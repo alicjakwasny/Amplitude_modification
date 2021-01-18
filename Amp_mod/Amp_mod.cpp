@@ -36,9 +36,10 @@ int main(int argc, char *argv[])
 	int amp = atoi(argv[3]);
 	std::cout << amp << "\n";
 
-	audio_amp song1(path_in, path_out, amp);
-	song1.read_file();
-	song1.amp_write();
+	//audio_amp song1(path_in, path_out, amp);
+	audio_amp song1;
+	song1.read_file(path_in);
+	song1.amp_write(path_out, amp);
 	
 	auto end = std::chrono::steady_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;

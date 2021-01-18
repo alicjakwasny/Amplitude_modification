@@ -7,17 +7,11 @@
 #include<vector>
 #include "audio_amp.h"
 
-audio_amp::audio_amp(std::string path_in, std::string path_out, int amp) {
+/*audio_amp::audio_amp(std::string path_in, std::string path_out, int amp) {
 	in_path = path_in;
-	/*in_path = ReplaceAll(in_path, std::string("\ "), std::string("\\")); //czy da siê to zrobiæ inaczej ni¿ z t¹ spacj¹ po \.
-	std::cout << in_path << "\n";*/
-
 	out_path = path_out;
-	/*out_path = ReplaceAll(out_path, std::string("\ "), std::string("\\"));
-	std::cout << out_path << "\n";*/
-
 	amp_db = amp;
-}
+}*/
 
 ErrorsAmpMod audio_amp::amp_change(const std::vector<float>& table_in, int amp, std::vector<float>& table_out) {
 	if (table_in.size() != table_out.size()) {
@@ -31,13 +25,14 @@ ErrorsAmpMod audio_amp::amp_change(const std::vector<float>& table_in, int amp, 
 	return ErrorsAmpMod::SUCCESS;
 }
 
-ErrorsAmpMod audio_amp::read_file() {
-	const char* in = in_path.c_str();
+ErrorsAmpMod audio_amp::read_file(const std::string &file_in) {
+	//const char* in = in_path.c_str();
+	const char* in = file_in.c_str();
 	infile = sf_open(in, SFM_READ, &sfinfo_in);
 	return ErrorsAmpMod::SUCCESS;
 }
 
-ErrorsAmpMod audio_amp::amp_write(int buff_items) {
+ErrorsAmpMod audio_amp::amp_write(const std::string &out_path, int &amp_db, int buff_items) {
 	sfinfo_out = sfinfo_in;
 
 	const char* out = out_path.c_str();
@@ -60,13 +55,4 @@ ErrorsAmpMod audio_amp::amp_write(int buff_items) {
 	sf_close(outfile);
 
 	return ErrorsAmpMod::SUCCESS;
-}
-
-std::string ReplaceAll(std::string str, const std::string& from, const std::string& to) {
-	size_t start_pos = 0;
-	while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
-		str.replace(start_pos, from.length(), to);
-		start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
-	}
-	return str;
 }
